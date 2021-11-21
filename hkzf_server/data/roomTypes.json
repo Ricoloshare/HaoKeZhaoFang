@@ -1,0 +1,24 @@
+{
+    "RECORDS": [
+        {
+            "name": "三室",
+            "code": "ROOM|20903ae0-c7bc-f2e2"
+        },
+        {
+            "name": "四室",
+            "code": "ROOM|ce2a5daa-811d-2f49"
+        },
+        {
+            "name": "一室",
+            "code": "ROOM|d4a692e4-a177-37fd"
+        },
+        {
+            "name": "二室",
+            "code": "ROOM|d1a00384-5801-d5cd"
+        },
+        {
+            "name": "四室+",
+            "code": "ROOM|2731c38c-5b19-ff7f"
+        }
+    ]
+}

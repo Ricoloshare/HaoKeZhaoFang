@@ -1,0 +1,44 @@
+{
+    "RECORDS": [
+        {
+            "name": "热水器",
+            "code": "SB1f7f33a6-4d2c-ba54"
+        },
+        {
+            "name": "电视",
+            "code": "SBac4167b0-cf6a-6198"
+        },
+        {
+            "name": "空调",
+            "code": "SB256d93cd-84f5-e1fa"
+        },
+        {
+            "name": "冰箱",
+            "code": "SB33e3135d-98ac-aeef"
+        },
+        {
+            "name": "洗衣机",
+            "code": "SBda30d5f8-55d5-56c0"
+        },
+        {
+            "name": "床",
+            "code": "SB406f3750-28b8-b073"
+        },
+        {
+            "name": "暖气",
+            "code": "SBd564bedf-928e-b995"
+        },
+        {
+            "name": "宽带",
+            "code": "SBbe2b2eb9-74cf-c43e"
+        },
+        {
+            "name": "衣柜",
+            "code": "SB13fb1c01-417b-5124"
+        },
+        {
+            "name": "天然气",
+            "code": "SBfcae66b5-0bb9-1c43"
+        }
+    ]
+}

@@ -1,0 +1,56 @@
+{
+    "RECORDS": [
+        {
+            "name": "精装",
+            "code": "CHAR|1d9bf0be-284f-93dd"
+        },
+        {
+            "name": "随时看房",
+            "code": "CHAR|ee11187b-a631-beef"
+        },
+        {
+            "name": "近地铁",
+            "code": "CHAR|76eb0532-8099-d1f4"
+        },
+        {
+            "name": "集中供暖",
+            "code": "CHAR|f56b9ad7-a97c-b28f"
+        },
+        {
+            "name": "双卫生间",
+            "code": "CHAR|51ae05f0-7c7a-c24b"
+        },
+        {
+            "name": "公寓",
+            "code": "CHAR|2d9fb1b2-dbf9-eb64"
+        },
+        {
+            "name": "独立卫生间",
+            "code": "CHAR|c3d3e453-c3fa-d4af"
+        },
+        {
+            "name": "押一付一",
+            "code": "CHAR|f838b575-9196-bf13"
+        },
+        {
+            "name": "独立阳台",
+            "code": "CHAR|479e8f8a-f193-9605"
+        },
+        {
+            "name": "月租",
+            "code": "CHAR|3870eb95-3f80-e5f8"
+        },
+        {
+            "name": "限女生",
+            "code": "CHAR|014e0e46-2147-8785"
+        },
+        {
+            "name": "限男生",
+            "code": "CHAR|7121e024-499d-c929"
+        },
+        {
+            "name": "新上",
+            "code": "CHAR|41e8322b-3846-d721"
+        }
+    ]
+}

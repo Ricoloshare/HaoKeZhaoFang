@@ -1,0 +1,36 @@
+{
+    "RECORDS": [
+        {
+            "name": "南",
+            "code": "ORIEN|61e99445-e95e-7f37"
+        },
+        {
+            "name": "东南",
+            "code": "ORIEN|dfb1b36b-e0d1-0977"
+        },
+        {
+            "name": "北",
+            "code": "ORIEN|caa6f80b-b764-c2df"
+        },
+        {
+            "name": "东",
+            "code": "ORIEN|141b98bf-1ad0-11e3"
+        },
+        {
+            "name": "西北",
+            "code": "ORIEN|80795f1a-e32f-feb9"
+        },
+        {
+            "name": "西",
+            "code": "ORIEN|103fb3aa-e8b4-de0e"
+        },
+        {
+            "name": "东北",
+            "code": "ORIEN|67ac2205-7e0f-c057"
+        },
+        {
+            "name": "西南",
+            "code": "ORIEN|2354e89e-3918-9cef"
+        }
+    ]
+}

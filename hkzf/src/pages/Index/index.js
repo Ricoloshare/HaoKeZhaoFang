@@ -9,6 +9,8 @@ import Nav4 from '../../assets/images/nav-4.png'
 import { baseUrl } from '../../utils/http'
 import {    useNavigate  } from 'react-router-dom'
 import './index.css'
+
+
 export default function Index () {
   const [swiper, setSwiper] = useState([])
   const [areaGroup, setareaGroup] = useState([])
@@ -16,7 +18,6 @@ export default function Index () {
   useEffect(() => {
     axios.get(`${baseUrl}/home/swiper`)
         .then((res)=>{
-            
             setSwiper(res.data.body) 
         })
     axios.get(`${baseUrl}/home/groups`,{
@@ -25,7 +26,6 @@ export default function Index () {
         }
     })
         .then((res)=>{
-            console.log(res)
             setareaGroup(res.data.body) 
         })
     axios.get(`${baseUrl}/home/news`,{
@@ -34,9 +34,13 @@ export default function Index () {
         }
     })
         .then((res)=>{
-            console.log(res)
             setNews(res.data.body) 
         })
+    
+    navigator.geolocation.getCurrentPosition((data)=>{
+        console.log(data)
+    })
+    
     return () => {
     }
   }, [])
@@ -49,11 +53,12 @@ export default function Index () {
       </Container>
     </Swiper.Item>
   ))
+
   return (
       <Wrapper>
         <SwiperEle>
             <Swiper autoplay>{items}</Swiper>
-            <Search></Search>
+            <Search/>
         </SwiperEle>
         <Nav/>
         <AreaGroup group={areaGroup} />
@@ -80,6 +85,62 @@ const Search = () => {
         </SearchContainer>
     )
 }
+
+const Nav = () => {
+    const history = useNavigate()
+    return (
+        <Grid columns={4} gap={8}>  
+          {navs.map(item =>
+            <NavContainer key={item.id} onClick={()=> history(item.path)}>
+                <Image src={item.img} />
+                <Font>{item.title}</Font>
+            </NavContainer>
+          )}
+        </Grid>
+    )
+}
+
+const AreaGroup = (props) => {
+    return (
+        <AreaGroupContainer>
+            <AreaGroupTitle>
+                <Tiltle>租房小组</Tiltle>
+                <AreaGroupLink>更多</AreaGroupLink>
+            </AreaGroupTitle>
+            <Grid columns={2} gap={8} > 
+                {props.group.map((item)=><AreaGroupContent key={item.id}>
+                    <AreaGroupContentLeft>
+                        <p>{item.title}</p>
+                        <p>{item.desc}</p>
+                    </AreaGroupContentLeft>
+                    <AreaGroupContentRight src={`${baseUrl}${item.imgSrc}`} />
+                </AreaGroupContent>)}
+            </Grid>
+        </AreaGroupContainer>
+    )
+}
+
+const News = (props) => {
+    return (
+        <AreaGroupContainer>
+            <AreaGroupTitle>
+                <Tiltle>最新资讯</Tiltle>
+            </AreaGroupTitle>
+            <div style={{marginBottom:'50px'}}>
+                {props.news.map((item)=>
+                    <NewsContent key={item.id}>
+                        <NewsContentLeft src={`${baseUrl}${item.imgSrc}`}></NewsContentLeft>
+                        <NewsContentRight>
+                            <Tiltle>{item.title}</Tiltle>
+                            <p>{item.from}-{item.date}</p>
+                        </NewsContentRight>
+                    </NewsContent>
+                )}
+            </div>
+        </AreaGroupContainer>
+    )
+}
+
 
 
 const navs = [{
@@ -207,58 +268,3 @@ const NewsContent = styled.div`
     border-bottom: 1px solid #ccc;
     padding: 0 10px;
 `
-const Nav = () => {
-    const history = useNavigate()
-    return (
-        <Grid columns={4} gap={8}>  
-          {navs.map(item =>
-            <NavContainer key={item.id} onClick={()=> history(item.path)}>
-                <Image src={item.img} />
-                <Font>{item.title}</Font>
-            </NavContainer>
-          )}
-        </Grid>
-    )
-}
-
-const AreaGroup = (props) => {
-    return (
-        <AreaGroupContainer>
-            <AreaGroupTitle>
-                <Tiltle>租房小组</Tiltle>
-                <AreaGroupLink>更多</AreaGroupLink>
-            </AreaGroupTitle>
-            <Grid columns={2} gap={8} > 
-                {props.group.map((item)=><AreaGroupContent key={item.id}>
-                    <AreaGroupContentLeft>
-                        <p>{item.title}</p>
-                        <p>{item.desc}</p>
-                    </AreaGroupContentLeft>
-                    <AreaGroupContentRight src={`${baseUrl}${item.imgSrc}`} />
-                </AreaGroupContent>)}
-            </Grid>
-        </AreaGroupContainer>
-    )
-}
-
-const News = (props) => {
-    return (
-        <AreaGroupContainer>
-            <AreaGroupTitle>
-                <Tiltle>最新资讯</Tiltle>
-            </AreaGroupTitle>
-            <div style={{marginBottom:'50px'}}>
-                {props.news.map((item)=>
-                    <NewsContent key={item.id}>
-                        <NewsContentLeft src={`${baseUrl}${item.imgSrc}`}></NewsContentLeft>
-                        <NewsContentRight>
-                            <Tiltle>{item.title}</Tiltle>
-                            <p>{item.from}-{item.date}</p>
-                        </NewsContentRight>
-                    </NewsContent>
-                )}
-            </div>
-        </AreaGroupContainer>
-    )
-}
-

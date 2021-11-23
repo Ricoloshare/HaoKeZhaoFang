@@ -13,3 +13,12 @@ html,body{
 :root:root {
   --adm-color-primary: #a062d4;
 }
+
+#root, .App {
+  height: 100%;
+}
+
+ul{
+  text-decoration: none;
+  list-style: none;
+}

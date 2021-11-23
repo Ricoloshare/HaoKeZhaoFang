@@ -8,6 +8,7 @@ import Nav3 from '../../assets/images/nav-3.png'
 import Nav4 from '../../assets/images/nav-4.png'
 import { baseUrl } from '../../utils/http'
 import {    useNavigate  } from 'react-router-dom'
+import { getCurrentCity } from '../../utils/utils'
 import './index.css'
 
 
@@ -15,34 +16,28 @@ export default function Index () {
   const [swiper, setSwiper] = useState([])
   const [areaGroup, setareaGroup] = useState([])
   const [news, setNews] = useState([])
+  const [location, setlocation] = useState('上海')
   useEffect(() => {
-    axios.get(`${baseUrl}/home/swiper`)
-        .then((res)=>{
-            setSwiper(res.data.body) 
+    const axiosDate = async () => {
+        const swiperRes = await axios.get(`${baseUrl}/home/swiper`)
+        setSwiper(swiperRes.data.body) 
+        const areaGroupRes = await axios.get(`${baseUrl}/home/groups`,{
+            params:{
+                area: 'AREA|88cff55c-aaa4-e2e0'
+            }
         })
-    axios.get(`${baseUrl}/home/groups`,{
-        params:{
-            area: 'AREA|88cff55c-aaa4-e2e0'
-        }
-    })
-        .then((res)=>{
-            setareaGroup(res.data.body) 
+        setareaGroup(areaGroupRes.data.body) 
+        const newsRes = await axios.get(`${baseUrl}/home/news`,{
+            params:{
+                area: 'AREA|88cff55c-aaa4-e2e0'
+            }
         })
-    axios.get(`${baseUrl}/home/news`,{
-        params:{
-            area: 'AREA|88cff55c-aaa4-e2e0'
-        }
-    })
-        .then((res)=>{
-            setNews(res.data.body) 
-        })
-    
-    navigator.geolocation.getCurrentPosition((data)=>{
-        console.log(data)
-    })
-    
-    return () => {
+        setNews(newsRes.data.body) 
+        const locationRes = await getCurrentCity()
+        setlocation(locationRes)
     }
+    
+    axiosDate()
   }, [])
   const items = swiper.map((data, index) => (
     <Swiper.Item key={index}>
@@ -58,7 +53,7 @@ export default function Index () {
       <Wrapper>
         <SwiperEle>
             <Swiper autoplay>{items}</Swiper>
-            <Search/>
+            <Search location = {location.label}/>
         </SwiperEle>
         <Nav/>
         <AreaGroup group={areaGroup} />
@@ -67,13 +62,13 @@ export default function Index () {
   )
 }
 
-const Search = () => {
+const Search = (props) => {
     const history = useNavigate()
     return (
         <SearchContainer>
             <SearchBox>
                 <div className='location' onClick={()=> history('/citylist')}>
-                    <span>上海</span>
+                    <span>{props.location}</span>
                     <i className={'iconfont icon-arrow'}></i>
                 </div>
                 <div className='form' onClick={()=> history('/search')}>

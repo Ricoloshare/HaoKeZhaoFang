@@ -1,12 +1,11 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react'
-import { NavBar } from 'antd-mobile'
+import React, { useEffect, useState, useRef} from 'react'
+import { Toast  } from 'antd-mobile'
 import { useNavigate } from 'react-router-dom'
-import { baseUrl } from '../../utils/http'
-import styled from '@emotion/styled'
-import axios from 'axios'
+import {  http } from '../../utils/http'
 import { getCurrentCity } from '../../utils/utils'
-import './index.css'
+import cityStyled from './index.module.css'
 import {AutoSizer, List} from 'react-virtualized';
+import NavHeader from '../../components/NavHeader'
 
 const formatCtyData = (list) => {
     const cityList = {}
@@ -29,22 +28,22 @@ const formatCtyData = (list) => {
 }
 export default function CityList() {
     const history = useNavigate()
-    const back = () =>{
-        history('/home')
-    }
+    // const back = () =>{
+    //     history(-1)
+    // }
     const [cityLists, setcityLists] = useState({})
     const [cityIndexs, setcityIndexs] = useState([])
     const couterRef  = useRef()
     const [activeIndex, setActiveIndex] = useState(0)
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get(`${baseUrl}/area/city`, {
+            const result = await http.get('/area/city', {
                 params: {
                     level: 1
                 }
             })
             const {cityList, cityIndex} = formatCtyData(result.data.body) 
-            const res = await axios.get(`${baseUrl}/area/hot`)
+            const res = await http.get('/area/hot')
             cityIndex.unshift("hot");
             cityList['hot'] = res.data.body;
             const currentCity = await getCurrentCity();
@@ -71,15 +70,28 @@ export default function CityList() {
             
         const letter = cityIndexs[index]
         return (
-            <div key={key} style={style} className='city'>
-                <div className='title'>{formatCityIndex(letter)}</div>
+            <div key={key} style={style} className={cityStyled.city}>
+                <div className={cityStyled.title}>{formatCityIndex(letter)}</div>
                 {
                     cityLists[letter] ? cityLists[letter].map((item)=>{
-                        return <div className='name' key={item.value}>{item.label}</div>
+                        return <div className={cityStyled.name} key={item.value} onClick={()=> changeCity(item)}>{item.label}</div>
                     }) : ''
                 }
             </div>
         );
+    }
+    const changeCity = async (city) => {
+        if(city.label === '上海' || city.label === '深圳' || city.label === '北京' || city.label === '广州'){
+            // const res = await axios.get(`${baseUrl}/area/map`)
+            history(-1)
+        }else{
+            return Toast.show({
+                content: '暂无房屋信息',
+                maskClickable: true
+              })
+        }
+        
+
     }
     const getRowHeight = ({index}) => {
             const letter = cityIndexs[index]
@@ -89,7 +101,7 @@ export default function CityList() {
     const moveToRender = ({ overscanStartIndex, overscanStopIndex, startIndex, stopIndex }) => {
         console.log(overscanStartIndex, overscanStopIndex, startIndex, stopIndex)
         if(startIndex !== activeIndex){
-            // setActiveIndex(startIndex)
+            setActiveIndex(startIndex)
         }
     }
     const moveto = (index) => {
@@ -97,8 +109,8 @@ export default function CityList() {
         couterRef.current.scrollToRow(index)
     }
     return (
-        <div className='citylist'>
-            <NavBar onBack={back}>城市选择</NavBar>
+        <div className={cityStyled.citylist}>
+            <NavHeader title={'城市选择'}/>
             <AutoSizer>
                 {({height, width}) => (
                 <List
@@ -119,13 +131,12 @@ export default function CityList() {
 }
 const NavList = (props) => {
     
-    
     return (
-        <ul className='city-index'>
+        <ul className={cityStyled['city-index']}>
             {
                 props.cityIndexs.map((item, index) => {
-                    return <li className='city-index-item' key={item} onClick={()=>props.moveto(index)}>
-                        <span className={props.activeIndex === index ? 'index-active': ''} >{item === 'hot' ? '热': item.toUpperCase()}</span>
+                    return <li className={cityStyled['city-index-item']}  key={item} onClick={()=>props.moveto(index)}>
+                        <span className={props.activeIndex === index ? cityStyled['index-active'] : ''} >{item === 'hot' ? '热': item.toUpperCase()}</span>
                     </li>
                 })
             }

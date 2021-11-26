@@ -1,33 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import { Grid , Swiper } from 'antd-mobile'
 import styled from '@emotion/styled'
-import axios from 'axios'
 import Nav1 from '../../assets/images/nav-1.png'
 import Nav2 from '../../assets/images/nav-2.png'
 import Nav3 from '../../assets/images/nav-3.png'
 import Nav4 from '../../assets/images/nav-4.png'
-import { baseUrl } from '../../utils/http'
-import {    useNavigate  } from 'react-router-dom'
+import { baseUrl, http } from '../../utils/http'
+import { useNavigate  } from 'react-router-dom'
 import { getCurrentCity } from '../../utils/utils'
-import './index.css'
-
+import SearchHeader from '../../components/SearchHeader'
 
 export default function Index () {
   const [swiper, setSwiper] = useState([])
   const [areaGroup, setareaGroup] = useState([])
   const [news, setNews] = useState([])
   const [location, setlocation] = useState('上海')
+  
   useEffect(() => {
     const axiosDate = async () => {
-        const swiperRes = await axios.get(`${baseUrl}/home/swiper`)
+        const swiperRes = await http.get('/home/swiper')
         setSwiper(swiperRes.data.body) 
-        const areaGroupRes = await axios.get(`${baseUrl}/home/groups`,{
+        const areaGroupRes = await http.get('/home/groups',{
             params:{
                 area: 'AREA|88cff55c-aaa4-e2e0'
             }
         })
         setareaGroup(areaGroupRes.data.body) 
-        const newsRes = await axios.get(`${baseUrl}/home/news`,{
+        const newsRes = await http.get('/home/news',{
             params:{
                 area: 'AREA|88cff55c-aaa4-e2e0'
             }
@@ -53,32 +52,15 @@ export default function Index () {
       <Wrapper>
         <SwiperEle>
             <Swiper autoplay>{items}</Swiper>
-            <Search location = {location.label}/>
+            <Search>
+                <SearchHeader location = {location.label}/>
+            </Search>
         </SwiperEle>
         <Nav/>
         <AreaGroup group={areaGroup} />
         <News news={news}></News>
       </Wrapper>
   )
-}
-
-const Search = (props) => {
-    const history = useNavigate()
-    return (
-        <SearchContainer>
-            <SearchBox>
-                <div className='location' onClick={()=> history('/citylist')}>
-                    <span>{props.location}</span>
-                    <i className={'iconfont icon-arrow'}></i>
-                </div>
-                <div className='form' onClick={()=> history('/search')}>
-                    <i className={'iconfont icon-seach'}></i>
-                    <span className='text'>请输入小区或地址</span>
-                </div>
-            </SearchBox>
-            <i className={'iconfont icon-map'} style={{color: 'white', fontSize: '35px'}} onClick={()=> history('/map')}></i>
-        </SearchContainer>
-    )
 }
 
 const Nav = () => {
@@ -152,7 +134,7 @@ const navs = [{
     id: 3,
     img: Nav3,
     title: '地图找房',
-    path: '/home/list'
+    path: '/map'
 },{
     id: 4,
     img: Nav4,
@@ -163,24 +145,14 @@ const SwiperEle = styled.div`
     height: 212px;
     position: 'relative';
 `
-const SearchContainer = styled.div`
+const Search = styled.div`
     width: 100%;
-    display: flex;
     position: absolute;
     top: 20px;
     left: 0;
     padding: 0 10px;
 `
-const SearchBox = styled.div`
-    display: flex;
-    flex: 1;
-    height: 34px;
-    margin: 0 10px;
-    padding: 5px 5px 5px 8px;
-    border-radius: 3px;
-    background-color: #fff;
-    align-items: center;
-`
+
 const NavContainer = styled(Grid.Item)`
   display: flex;
   justify-content: center;

@@ -1,4 +1,4 @@
-import { NavBar, TabBar } from 'antd-mobile'
+import { TabBar } from 'antd-mobile'
 import React from 'react'
 import {
   Route,
@@ -11,6 +11,9 @@ import styled from '@emotion/styled'
 import './index.css'
 
 import Index from '../Index'
+import HouseList from '../HouseList'
+import News from '../News'
+import Profile from '../Profile'
 
 const Bottom = () => {
   const history = useNavigate()
@@ -63,9 +66,9 @@ export default function home() {
         <ContainerBody>
           <Routes>
             <Route path='/' element={<Index />} />
-            <Route path='/list' element={<Todo />} />
-            <Route path='/news' element={<Message />} />
-            <Route path='/me' element={<PersonalCenter />} />
+            <Route path='/list' element={<HouseList />} />
+            <Route path='/news' element={<News />} />
+            <Route path='/me' element={<Profile />} />
           </Routes>
         </ContainerBody>
         <ContainerBottom>

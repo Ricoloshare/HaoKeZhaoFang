@@ -1,16 +1,31 @@
-import React from 'react'
-import { baseUrl, http } from '../../utils/http'
-import { Grid , Swiper } from 'antd-mobile'
-import style from './index.module.css'
+import React,{useState} from 'react'
+import { baseUrl, http } from '../../../../utils/http'
+import {CascadePicker  } from 'antd-mobile'
+import FilterFooter from '../../../../components/FilterFooter'
+// import style from './index.module.css'
 
-export default function FilterPicker() {
+export default function FilterPicker(props) {
 
+    const {onCancel, onComfirm, data, type, defaultValue, setselectValues, selectValues} = props
+    // const [value, setValue] = useState([])
     return (
-        <div className={style.houselist}>
-            <div className={style.header}>
-                
-            </div>
-            
-        </div>
+        <>
+            <CascadePicker
+                options={data}
+                visible={true}
+                onClose={onCancel}
+                onConfirm={
+                    onComfirm
+                }
+                defaultValue = {defaultValue[type]}
+                onSelect={val => {
+                    setselectValues({
+                        ...selectValues,
+                        [type]: val
+                    })
+                }}
+            />
+            {/* <FilterFooter onCancel = {()=>onCancel()}  onOk = {()=>onComfirm(type, value)}/> */}
+        </>
     )
 }

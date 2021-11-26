@@ -22,3 +22,7 @@ ul{
   text-decoration: none;
   list-style: none;
 }
+
+.adm-mask {
+  display: none !important;
+}

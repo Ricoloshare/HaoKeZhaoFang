@@ -1,0 +1,12 @@
+.root {
+    margin-top: 20px;
+    background-color: white;
+    /* margin-bottom: 10px; */
+}
+
+.cancel {
+    width: 49%;
+}
+.ok {
+    width: 49%;
+}

@@ -1,0 +1,20 @@
+.root {
+    position: relative;
+    z-index:3;
+    height: 40px;
+}
+.mask {
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.content {
+    position: absolute;
+    width: 100%;
+    z-index: 3;
+    background-color: #fff;
+}

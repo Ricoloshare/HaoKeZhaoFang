@@ -14,7 +14,6 @@ export const getCurrentCity = () => {
                                     name: data.name
                                 }
                             })
-                console.log(res.data.body)
                 localStorage.setItem('hkzf_city', JSON.stringify(res.data.body))
                 resolve(res.data.body)
             }catch(e){

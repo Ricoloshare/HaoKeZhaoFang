@@ -2,23 +2,27 @@ import React, { useEffect, useState }  from 'react'
 import SearchHeader from '../../components/SearchHeader'
 import { useNavigate  } from 'react-router-dom'
 import { baseUrl, http } from '../../utils/http'
-import { Grid , Swiper } from 'antd-mobile'
+import { Toast } from 'antd-mobile'
 import style from './index.module.css'
 import Filter from './components/Filter'
 import HouseItem from '../../components/HouseItem'
 import {AutoSizer, List, WindowScroller, InfiniteLoader} from 'react-virtualized';
 import Sticky from '../../components/Sticky'
+import { getCurrentCity } from '../../utils/utils'
 
 export default function HouseList() {
     const history = useNavigate()
-    const {label, value} = JSON.parse(localStorage.getItem("hkzf_city"));
     const [houselist, setHouseList] = useState([])
     const [filter, setFilter] = useState({})
     const [count, setCount] = useState(0)
-
+    const [isLoading, setisLoading] = useState(true)
     const onFilter = (filter) => {
         setFilter(filter)
+        // 点击确定按钮时， 页面回到顶部
+        window.scrollTo(0, 0);
+        getHouses(filter)
     }
+    const {label, value} = JSON.parse(localStorage.getItem('hkzf_city'));
 
     const getHouses = async(filter) => {
         const params = {
@@ -27,13 +31,22 @@ export default function HouseList() {
             start: 1,
             end: 20,
         };
+        Toast.show({
+            icon: 'loading',
+            content: '加载中…',
+            duration: 0,
+        })
+        setisLoading(true)
         const res = await http.get('/houses',{
             params: params
         })
+        // Toast.clear()
+        setisLoading(false)
         const {list, count} = res.data.body
         setHouseList(list)
         setCount(count)
     }
+
     const rowRenderer = ({key, index, style}) => {
         const item = houselist[index]
         if(item){
@@ -55,9 +68,6 @@ export default function HouseList() {
         }
             
     }
-    useEffect(()=>{
-        getHouses(filter)
-    },[filter])
 
     const isRowLoaded = ({ index }) => {
         return !!houselist[index];
@@ -83,14 +93,9 @@ export default function HouseList() {
             })
         })
     }
-      
-    return (
-        <div className={style.houselist}>
-            <div className={style.header}>
-                <i className={'iconfont icon-back'} onClick={()=> {history(-1)}}></i>
-                <SearchHeader location = {label} className = {style.searchHead} />
-            </div>
-            <Sticky height={40}><Filter onFilter= {onFilter}/></Sticky>
+    
+    const HouseListRender = () => {
+        return (
             <InfiniteLoader
                 isRowLoaded={isRowLoaded}
                 loadMoreRows={loadMoreRows}
@@ -119,6 +124,16 @@ export default function HouseList() {
                     </WindowScroller>
             )}
             </InfiniteLoader>
+        )
+    }
+    return (
+        <div className={style.houselist}>
+            <div className={style.header}>
+                <i className={'iconfont icon-back'} onClick={()=> {history(-1)}}></i>
+                <SearchHeader location = {label} className = {style.searchHead} />
+            </div>
+            <Sticky height={40}><Filter onFilter= {onFilter}/></Sticky>
+            {count === 0 && !isLoading ? <h3 className={style.no}>没有找到房源</h3>  : HouseListRender()}
         </div>
     )
 }

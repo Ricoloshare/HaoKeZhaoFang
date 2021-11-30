@@ -83,6 +83,7 @@ export default function CityList() {
     const changeCity = async (city) => {
         if(city.label === '上海' || city.label === '深圳' || city.label === '北京' || city.label === '广州'){
             // const res = await axios.get(`${baseUrl}/area/map`)
+            localStorage.setItem('hkzf_city', JSON.stringify(city))
             history(-1)
         }else{
             return Toast.show({

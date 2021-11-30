@@ -22,22 +22,28 @@ const selectedValues = {
     more: []
 }
 
-export default function Filter() {
+export default function Filter(props) {
+    const {value} = JSON.parse(localStorage.getItem("hkzf_city"));
+
     const [titleSelectedStatus, settitleSelectedStatus] = useState({...titleSelected})
     // 控制 FilterPicker  FilterMore 组件的展示或隐藏
     const [openType, setopenType] = useState('')
     const [filterDate, setfilterDate] = useState(selectedValues)
     const [selectValues, setselectValues] = useState(selectedValues)
     const [isMask, setisMask] = useState(false)
-    const [houses, sethouses] = useState()
-
+    const [filters, setfilters] = useState({})
+ 
     useEffect(()=>{
         getFilterDate()
     },[])
 
-    const getHouseDate = async() => {
+    useEffect(()=>{
+        props.onFilter(filters)
+    }, [filters])
+
+    const getFilters = async() => {
         const {area, mode, price, more} = selectValues
-        const params = {};
+        const params = {}
         params[area[0]] = area[1]
         for(let i = 2; i < area.length; i++){
             if(area[i]){
@@ -47,15 +53,11 @@ export default function Filter() {
         params['more'] = more.join(",")
         params['mode'] = mode[0]
         params['price'] = price[0]
-        const res = await http.get('/houses',{
-            params: params
-        })
-        console.log(res)
-        sethouses(res.data.body.list)
+        setfilters(params)
     }
 
     const getFilterDate = async() => {
-        const {value} = JSON.parse(localStorage.getItem("hkzf_city"));
+        
         const res = await http.get(`/houses/condition?id=${value}`)
         setfilterDate(res.data.body)
     }
@@ -106,7 +108,7 @@ export default function Filter() {
         
         setopenType('')
         setisMask(false)
-        getHouseDate()
+        getFilters()
         
     }
 

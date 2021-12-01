@@ -8,7 +8,6 @@ import Filter from './components/Filter'
 import HouseItem from '../../components/HouseItem'
 import {AutoSizer, List, WindowScroller, InfiniteLoader} from 'react-virtualized';
 import Sticky from '../../components/Sticky'
-import { getCurrentCity } from '../../utils/utils'
 
 export default function HouseList() {
     const history = useNavigate()
@@ -40,7 +39,7 @@ export default function HouseList() {
         const res = await http.get('/houses',{
             params: params
         })
-        // Toast.clear()
+        Toast.clear()
         setisLoading(false)
         const {list, count} = res.data.body
         setHouseList(list)
@@ -55,7 +54,7 @@ export default function HouseList() {
                 key={key}
                 // 图片地址
                 src={baseUrl + item.houseImg}
-                onClick={() => this.props.history.push(`/detail/${item.houseCode}`)}
+                onClick={() => history(`/detail/${item.houseCode}`)}
                 title={item.title}
                 desc={item.desc}
                 tags={item.tags}

@@ -6,12 +6,13 @@ import { baseUrl, http } from '../../utils/http'
 import { Link } from "react-router-dom";
 import HouseItem from '../../components/HouseItem'
 import { Toast } from 'antd-mobile'
+import { useNavigate} from 'react-router-dom'
 
 const baiduMap = ({setisShowList, sethouseLists}) => {
     const BMapGL = window.BMapGL
     const {label, value} = JSON.parse(localStorage.getItem("hkzf_city"));
     const map = new BMapGL.Map("container");
-    
+
     const init = () => {
         const myGeo = new BMapGL.Geocoder();
         
@@ -166,7 +167,8 @@ const baiduMap = ({setisShowList, sethouseLists}) => {
 export default function Map(){
     const [isShowList, setisShowList] = useState(false)
     const [houseLists, sethouseLists] = useState([])
-
+    const history = useNavigate()
+    
     useEffect(()=>{
         baiduMap({setisShowList: setisShowList, sethouseLists: sethouseLists})
     },[])
@@ -192,7 +194,7 @@ export default function Map(){
                                 key={item.houseCode}
                                 // 图片地址
                                 src={baseUrl + item.houseImg}
-                                onClick={() => this.props.history.push(`/detail/${item.houseCode}`)}
+                                onClick={() => history(`/detail/${item.houseCode}`)}
                                 title={item.title}
                                 desc={item.desc}
                                 tags={item.tags}

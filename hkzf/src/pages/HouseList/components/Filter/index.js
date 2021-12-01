@@ -5,6 +5,7 @@ import { baseUrl, http } from '../../../../utils/http'
 import FilterMore from '../FilterMore'
 import FilterPicker from '../FilterPicker'
 import FilterTitle from '../FilterTitle'
+import { useSpring, animated } from 'react-spring'
 
 import style from './index.module.css'
 
@@ -30,7 +31,6 @@ export default function Filter(props) {
     const [openType, setopenType] = useState('')
     const [filterDate, setfilterDate] = useState(selectedValues)
     const [selectValues, setselectValues] = useState(selectedValues)
-    const [isMask, setisMask] = useState(false)
     const [filters, setfilters] = useState({})
  
     useEffect(()=>{
@@ -63,7 +63,6 @@ export default function Filter(props) {
     }
 
     const onSelected = (type) => {
-        setisMask(true)
         const curtitleSelected = {...titleSelectedStatus}
         for(let key in selectValues){
             if(JSON.stringify(selectValues[key]) === JSON.stringify(selectedValues[key])){
@@ -88,7 +87,6 @@ export default function Filter(props) {
             ...curtitleSelected
         })
         setopenType('')
-        setisMask(false)
     }
 
     const onComfirm = () => {
@@ -107,7 +105,6 @@ export default function Filter(props) {
         // })
         
         setopenType('')
-        setisMask(false)
         getFilters()
         
     }
@@ -156,10 +153,36 @@ export default function Filter(props) {
         }
         return 
     }
+
+    const Mask = ()=> {
+        const hide = openType === '' || openType === 'more'
+        const {x} = useSpring({
+            from: { x: 0 },
+            x: hide ? 0 : 1 
+        })
+
+        return (
+            <animated.div
+                style={{
+                    opacity: x.to(x => x),
+                    display: x.to(x => {
+                        if(x === 0) return 'none'
+                        else return 'block'
+                    })
+                }}
+            >
+                <div className={style.mask} onClick={()=>{onCancel()}}></div>
+            </animated.div>
+        )
+            
+        
+    }
+
     return (
         <div className={style.root}>
                 {/* 遮罩层组件 */}
-                <div className={isMask ? style.mask : ''} onClick={()=>{onCancel()}}></div>
+                {<Mask/>}
+                
 
                 {/* 内容组件 */}
                 <div className={style.content}>
